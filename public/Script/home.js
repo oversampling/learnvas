@@ -6,6 +6,18 @@ nav_toggle.addEventListener("click", () => {
   link_container.classList.toggle("nav-show");
 });
 
+const userBtn = document.querySelector("#user");
+const profileGroup = document.querySelector(".profileGroup")
+userBtn.addEventListener("click", () => {
+  if (profileGroup.classList.contains("show")){
+    profileGroup.classList.remove("show");
+    profileGroup.classList.add("hide");
+  }else{
+    profileGroup.classList.remove("hide");
+    profileGroup.classList.add("show");
+  }
+})
+
 //theme switcher
 const modeSwitcher = document.querySelector(".mode-switcher");
 const theme = localStorage.getItem("theme");
@@ -37,6 +49,7 @@ const auth = firebase.auth();
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const provider = new firebase.auth.GoogleAuthProvider();
+const reviewForm = document.querySelector(".reviews form");
 
 loginBtn.onclick = () => auth.signInWithPopup(provider);
 logoutBtn.onclick = () => auth.signOut();
@@ -44,39 +57,46 @@ logoutBtn.onclick = () => auth.signOut();
 auth.onAuthStateChanged(async user => {
   if (user) {
     loginBtn.style.display = "none";
-    logoutBtn.style.display = "block";
+    userBtn.style.display = "block";
     document.querySelector("#user img").setAttribute("src", user.photoURL);
-    document.getElementById("user").style.display = "block";
     const questionForm = document.querySelector(".qa-section form");
-    questionForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const questionInput = document.querySelector("#question-input");
-      if (questionInput.value){
-        axios.post("/question", { 
-          email: user.email,
-          question: questionInput.value,
-          course: document.querySelector(".course-title").textContent
-        }).then(response => {
-          window.location = response.data.redirect;
-        })
-        questionInput.value = "";
-      }
-    })
-    const reviewForm = document.querySelector(".reviews form");
-    reviewForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const reviewInput = document.querySelector("#review-input");
-      if (reviewInput.value){
-        axios.post("/review", {
-          email: user.email,
-          review: reviewInput.value,
-          course: document.querySelector(".course-title").textContent
-        }).then(response => {
-          window.location = response.data.redirect;
-        })
-      }
-      reviewInput.value = ""
-    })
+    if (questionForm){
+      questionForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const questionInput = document.querySelector("#question-input");
+        if (questionInput.value){
+          axios.post("/question", { 
+            email: user.email,
+            question: questionInput.value,
+            course: document.querySelector(".course-title").textContent
+          }).then(response => {
+            window.location = response.data.redirect;
+          })
+          questionInput.value = "";
+        }
+      })
+    }
+    if (reviewForm){
+      reviewForm.innerHTML = `
+      <form action="#" method="POST">
+            <input type="text" name ="question" id="review-input">
+            <button type="submit">Post <span>Reviews</span></button>
+        </form>`
+      reviewForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const reviewInput = document.querySelector("#review-input");
+        if (reviewInput.value){
+          axios.post("/review", {
+            email: user.email,
+            review: reviewInput.value,
+            course: document.querySelector(".course-title").textContent
+          }).then(response => {
+            window.location = response.data.redirect;
+          })
+        }
+        reviewInput.value = ""
+      })
+    }
     try{
       await axios.post("/user", {
         email: user.email,
@@ -88,9 +108,10 @@ auth.onAuthStateChanged(async user => {
     }
   } else {
     loginBtn.style.display = "block";
-    logoutBtn.style.display = "none";
+    userBtn.style.display = "none";
+    profileGroup.classList.add("hide");
     document.getElementById("user").style.display = "none";
-    document.querySelector(".qa-section form").removeEventListener("submit")
+    reviewForm.innerHTML = "<p>Login to post review</p>"
   }
 });
 

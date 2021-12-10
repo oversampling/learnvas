@@ -17,8 +17,10 @@
 2. run command "npm install" to install require dependencies
 3. Import data to your mongodb, each collection name is following the title of the file
 4. Create a .env file that contain your stripe API key **(optional)**
-    SERVER_URL=http://localhost:3000
+    ````
+    SERVER_URL=http://localhost:3000 
     STRIPE_API_KEY=your_stripe_api_key
+    ````
 5. Run command node index.js and go to localhost:3000
 
 Future Improvement

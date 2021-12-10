@@ -1,0 +1,23 @@
+<%- include("./Template/header/header.ejs", {atPage})%>
+<main class="mycourses">
+    <div class='banner'>
+        My Courses
+    </div>
+    
+    <section id="mycourses-content">
+        <div class="mycourses-list">
+            <% for( let course of courses) { %>
+                <div class="course-card" onclick="location.pathname='<%= userID %>/mycourses/<%= course._id.toString() %>/course'">
+                    <div>
+                        <img src="<%= course.photo %>" alt="">
+                    </div>
+                    <div>
+                        <p class="course-title"><%= course.title %></p>
+                        <p class="course-author"><%= course.instructor %> </p>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </section>
+</main>
+<%- include("./Template/footer/footer.ejs")  %> 

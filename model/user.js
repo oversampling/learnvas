@@ -10,7 +10,12 @@ const userSchema = new mongoose.Schema({
         required: true
     },photo:{
         type: String,
-    }
+    },courses:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Course"
+        }
+    ]
 })
 
 const User = mongoose.model("User", userSchema)

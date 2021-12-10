@@ -3,7 +3,7 @@
     <h1 class="title">Computer Science Course</h1>
     <div class="courses-container">
         <% for( let i = 0; i < courses.length; i++ ) { %>
-            <div class="card" onclick="location.href=`/course/<%= courses[i].id %>`">
+            <div class="card" onclick="location.href=`<%= typeof userID !== 'undefined' ? '/'+userID: '' %>/course/<%= courses[i].id %>`" >
                 <img src="<%= courses[i].photo %> " alt="">
                 <h2 class="card-title"><%= courses[i].title %></h2>
                 <p class="card-description"><%= courses[i].description %> </p>

@@ -4,16 +4,16 @@
       <img id="toggle-btn" src="../../Assets/align-justify.svg" alt="#" />
       <ul>
         <li class=<%= atPage === "home" ? "atPage": ""%>><a href="/">Home</a></li>
-        <li class=<%= atPage === "aboutUs" ? "atPage": ""%>><a href="/aboutUs">About Us</a></li>
-        <li class=<%= atPage === "course" ? "atPage": ""%>><a href="/aboutUs"><a href="/course">Course</a></li>
+        <li class=<%= atPage === "aboutUs" ? "atPage": ""%>><a <%= typeof userID !== "undefined" ? `href=/${userID}/aboutUs` : 'href=/aboutUs' %>>About Us</a></li>
+        <li class=<%= atPage === "course" ? "atPage": ""%>><a <%=typeof userID !== "undefined" ? `href=/${userID}/course` : 'href=/course' %>>Course</a></li>
         <li id="loginBtn"><a href="#">Login</a></li>
         <li id="user"><img src="" alt=""></li>
-        <li class="profileBtn-toggle">My Course</li>
-        <li class="profileBtn-toggle">Logout</li>
+        <li class="profileBtn-toggle mycoursesBtn" <%=typeof userID !== "undefined" ? `onclick=location.pathname='${userID}/mycourses'` : "" %>>My Course</li>
+        <li class="profileBtn-toggle logoutBtn">Logout</li>
       </ul>
     </div>
   </nav>
 <div class="profileGroup hide">
-  <div class="profileBtn">My Course</div>
-  <div class="profileBtn" id="logoutBtn">Logout</div>
+  <div class="profileBtn mycoursesBtn" <%=typeof userID !== "undefined" ? `onclick=location.pathname='${userID}/mycourses'` : "" %>>My Course</div>
+  <div class="profileBtn logoutBtn">Logout</div>
 </div>

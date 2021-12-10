@@ -26,7 +26,10 @@ const courseSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId, 
             ref: "Reviews"
         }
-    ]
+    ],material:{
+        type: String, 
+        require:true
+    }
 })
 
 const Course = mongoose.model("Course", courseSchema)

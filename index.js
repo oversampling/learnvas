@@ -1,5 +1,4 @@
 /*
-TODO: update sucessfull and cancel payment page.
 TODO: block user to buy again course
 
 FIXME use passport js to login.
@@ -17,6 +16,8 @@ const Course = require("./model/course");
 const Question = require("./model/question.js");
 const Reviews = require('./model/review.js');
 const Review = require("./model/review.js");
+const { estimatedDocumentCount } = require("./model/user");
+const { type } = require("os");
 
 //Stripe
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
@@ -51,19 +52,77 @@ app.get("/course", async (req, res) => {
   res.render("courses", {courses,atPage: "course"})
 })
 
-app.get("/course/:id", async (req, res) => {
-  const {id} = req.params;
-  const course = await Course.findById(id).populate({
+app.get("/course/:courseID", async (req, res) => {
+  const {courseID} = req.params;
+  const course = await Course.findById(courseID).populate(
+    {
+    path: "review", 
+    populate: {
+    path: 'user',
+    model: 'User'
+  }});
+  res.render("course", {course, atPage: "course", courseID})
+})
+
+app.get("/:userID", (req, res) => {
+  const {userID} = req.params
+  res.render("home", {userID, atPage: "home"})
+})
+
+app.get("/:userID/aboutUs", (req, res) => {
+  const {userID} = req.params;
+  res.render("aboutUs", {userID, atPage: "aboutUs"});
+});
+
+app.get("/:userID/course", async (req, res) => {
+  const courses = await Course.find({});
+  const {userID} = req.params
+  res.render("courses", {courses,atPage: "course", userID})
+})
+
+app.get("/:userID/course/:courseID", async (req, res) => {
+  const {courseID} = req.params;
+  const course = await Course.findById(courseID).populate(
+    {
+    path: "review", 
+    populate: {
+    path: 'user',
+    model: 'User'
+  }});
+  const {userID} = req.params
+  res.render("course", {course, atPage: "course", courseID, userID})
+})
+
+app.get("/:userID/mycourses", async(req, res) =>{
+  const {userID} = req.params;
+  const userCourses = await User.findById(userID).populate({
+    path: "courses"
+  })
+  let courses = userCourses.courses
+  res.render("userCoursesList", {atPage: "mycourses", userID, courses})
+})
+
+app.get("/:userID/mycourses/:courseID/course", async (req, res) =>{
+  const {courseID, userID} = req.params;
+  const user = await User.findById(userID).populate({
+    path: "courses",
+  });
+  //FIXME make insert course to user more secure
+  const isCourseExist = user.courses.some(({_id}) => {
+    return _id.toString() === courseID 
+  })
+  if (!isCourseExist){
+    await user.courses.push(mongoose.Types.ObjectId(courseID));
+    await user.save();
+  }
+  const course = await Course.findById(courseID).populate({
     path: "question",
     populate: {
       path: "user",
       model: "User"
     }
-  }).populate({path: "review", populate: {
-    path: 'user',
-    model: 'User'
-  }});
-  res.render("course", {course, atPage: "course"})
+  });
+  res.render("userCourse", {courseID, atPage: "mycourse", course, userID})
 })
 
 app.post("/user", async (req, res) => {
@@ -73,22 +132,26 @@ app.post("/user", async (req, res) => {
     try {
       const newUser = await User({email, name, photo});
       newUser.save();
+      // console.log(newUser[0]._id.toString())
+      return res.json({userID: newUser[0]._id.toString()});
     } catch (error) {
       console.log(error.message)
     }
+  }else{
+    // console.log(user[0]._id.toString())
+    return res.json({userID: user[0]._id.toString()});
   }
-  res.redirect("/");
 })
 
 app.post("/question", async(req, res) => {
-  const {email, question, course} = req.body;
-  const user = await User.findOne({email: {$eq: email}});
+  const {userID, question, courseID} = req.body;
+  const user = await User.findById(userID);
   const questionData = await Question({question, answer: "No reply yet", user:user._id});
-  const courseData = await Course.findOne({title: course});
+  const courseData = await Course.findById(courseID);
   courseData.question.push(questionData._id);
   await questionData.save();
   await courseData.save();
-  return res.json({redirect: `/course/${courseData._id}`})
+  return res.json({redirect: `/${userID}/mycourses/${courseData._id}/course`})
 })
 
 app.post("/review", async (req, res) => {
@@ -102,15 +165,9 @@ app.post("/review", async (req, res) => {
   return res.json({redirect: `/course/${courseData._id}`});
 })
 
-
-const storeItems = new Map([
-  [1, { priceInCents: 10000, name: "Learn React Today" }],
-  [2, { priceInCents: 20000, name: "Learn CSS Today" }],
-])
-
-
 app.post("/create-checkout-session", async (req, res) => {
   const storeItem = await Course.findById(req.body.items.id);
+  const otherDetail = req.body.otherDetail
   const line_items = [{
     price_data: {
       currency: "myr",
@@ -126,14 +183,22 @@ app.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       mode: "payment", 
       line_items: line_items,
-      success_url: `${process.env.SERVER_URL}/`,
-      cancel_url: `${process.env.SERVER_URL}/course`,
+      success_url: `${process.env.SERVER_URL}/${otherDetail.userID}/mycourses/${storeItem._id}/course`,
+      cancel_url: `${process.env.SERVER_URL}/${otherDetail.userID}/course`,
     })
-    res.json({ url: session.url })
+    return res.json({ url: session.url, otherDetail })
   } catch (e) {
-    res.status(500).json({ error: e.message })
+    return res.status(500).json({ error: e.message })
   }
 })
+
+// app.post("/buyCourses", async (req, res) => {
+//   const {userID, courseID} = req.body.otherDetail;
+//   const user = await User.findById(userID)
+//   const course = await Course.findById(courseID);
+//   user.courses.push(course._id)
+//   await user.save();
+// })
 
 app.listen(3000, () => {
   console.log("Listening on port 3000");

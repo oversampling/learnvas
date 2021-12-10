@@ -1,32 +1,16 @@
 <%- include("./Template/header/header.ejs", {atPage})%>
 <main class="course">
     <div class="course-intro">
-        <img src=".<%= course.photo  %> " alt="">
+        <img src="<%= course.photo  %> " alt="">
         <div>
             <h1 class="course-title"><%= course.title %></h1>
             <h2 class="course-instructor"><%= course.instructor %> </h2>
             <p class="course-price">Price: <%= course.price %></p>
-            <button class="buy-btn">Buy now</button>
+            <button class="buy-btn" data-course-id="<%= courseID %>">Buy now</button>
             <p class="course-desc-title">Description</p>
             <p class="course-desc"><%= course.description %></p>
         </div>
     </div>
-    <!-- <div class="qa-section">
-        <h1>Q&A</h1>
-        <form action="#" method="POST">
-            <input type="text" name ="question" id="question-input">
-            <button type="submit">Post <span>Question</span></button>
-        </form>
-        <div>
-            <% for( let index = 0; index < course.question.length; index++ ) { %>
-                <div class="qa-item">
-                    <p>By: <span><%= course.question[0].user.name %> </span></p>
-                    <p>Question: <span><%= course.question[index].question %> </span></p>
-                    <p>Answer: <span><%= course.question[index].answer %></span></p>
-                </div>
-            <% } %>            
-        </div>
-    </div> -->
     <div class="reviews">
         <h1>Reviews</h1>
         <form action="#" method="POST">

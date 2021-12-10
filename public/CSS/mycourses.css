@@ -1,0 +1,87 @@
+@import "home.css";
+
+body{
+    position: relative;
+}
+
+.mycourses{
+    position: relative;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 50px;
+} 
+
+.mycourses .banner{
+    position: relative;
+    top: 100px; 
+    height: 100px;
+    line-height: 100px;
+    left: 0;
+    overflow: visible;
+    font-size: var(--font-size-primary);
+    background-color: var(--font-color-secondary);
+    padding-left: 10%;
+}
+
+#mycourses-content{
+    margin-top: 150px;
+}
+
+.mycourses .mycourses-list{
+    position: relative;
+    top: 250px;
+    margin: 0 10%;
+    position: relative;
+    top: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.mycourses .course-card{
+    min-height: 357px;
+    max-height: 100%;
+    width: 300px;
+    box-shadow: 0px 0px 5px 0px rgba(217, 217, 217, 0.76);
+    border-radius: 20px;
+    transition: var(--transition);
+    cursor: pointer;
+    margin: 5% 0;
+}
+
+.mycourses .course-card .course-title{
+    text-align: center;
+    font-size: var(--font-size-thirth);
+    padding: 5%;
+    border-bottom: var(--font-color-secondary) solid 1px;
+}
+
+
+.mycourses .course-card:hover{
+    box-shadow: 0px 0px 8px 3px rgba(217, 217, 217, 0.76);
+    transform: translateY(-10px);
+}
+  
+.mycourses .course-card img{
+    transform: translateX(50%);
+    position: relative;
+    right: 50%;
+    width: 300px;
+    height: 245px;
+    border-radius: 20px;
+}
+.mycourses .course-card .course-author{
+    font-size: var(--font-size-fourth);
+    font-weight: 200;
+    padding: 3%;
+    text-align: center;
+}
+
+@media screen and (max-width: 1200px) {
+    .mycourses .mycourses-list{
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+}
+
+
+

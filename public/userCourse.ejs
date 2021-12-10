@@ -1,0 +1,27 @@
+<%- include("./Template/header/header.ejs", {atPage})%>
+<main class="mycourses">
+    <div class='banner' id="banner" data-course-id=<%= courseID %> data-user-id=<%= userID %>>
+        <%= course.title %> 
+    </div>
+    <section id="mycourses-content">
+        <div id="course-content">
+            <iframe id="course-material" src="https://www.youtube.com/embed/<%= course.material %>"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </section>
+    <div class="qa-section">
+        <h1>Q&A</h1>
+        <form action="#" method="POST">
+            <input type="text" name ="question" id="question-input">
+            <button type="submit">Post <span>Question</span></button>
+        </form>
+            <% for( let index = 0; index < course.question.length; index++ ) { %>
+                <div class="qa-item">
+                    <p>By: <span><%= course.question[0].user.name %> </span></p>
+                    <p>Question: <span><%= course.question[index].question %> </span></p>
+                    <p>Answer: <span><%= course.question[index].answer %></span></p>
+                </div>
+            <% } %>            
+        
+    </div>
+</main>
+<%- include("./Template/footer/footer.ejs")  %> 

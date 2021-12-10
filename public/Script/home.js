@@ -47,12 +47,17 @@ modeSwitcher.addEventListener("click", () => {
 
 const auth = firebase.auth();
 const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
+const logoutBtns = document.querySelectorAll(".logoutBtn");
 const provider = new firebase.auth.GoogleAuthProvider();
 const reviewForm = document.querySelector(".reviews form");
 
 loginBtn.onclick = () => auth.signInWithPopup(provider);
-logoutBtn.onclick = () => auth.signOut();
+for (let logoutBtn of logoutBtns){
+  logoutBtn.onclick = () => {
+    auth.signOut()
+    location.href = "/";
+  };
+}
 
 auth.onAuthStateChanged(async user => {
   if (user) {
@@ -64,11 +69,14 @@ auth.onAuthStateChanged(async user => {
       questionForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const questionInput = document.querySelector("#question-input");
+        const courseID = document.querySelector("#banner").dataset.courseId;
+        const userID = document.querySelector("#banner").dataset.userId;
+        alert(courseID)
         if (questionInput.value){
           axios.post("/question", { 
-            email: user.email,
+            userID,
             question: questionInput.value,
-            course: document.querySelector(".course-title").textContent
+            courseID
           }).then(response => {
             window.location = response.data.redirect;
           })
@@ -76,6 +84,7 @@ auth.onAuthStateChanged(async user => {
         }
       })
     }
+    //TODO change search which course that review belong by using course id instead of course title
     if (reviewForm){
       reviewForm.innerHTML = `
       <form action="#" method="POST">
@@ -98,20 +107,55 @@ auth.onAuthStateChanged(async user => {
       })
     }
     try{
-      await axios.post("/user", {
+      var userID = await axios.post("/user", {
         email: user.email,
         name: user.displayName,
         photo: user.photoURL,
       });
+      userID = userID.data.userID;
+      if (location.pathname.substring(1, userID.length + 1) !== userID){
+        location.href = `/${userID}${location.pathname}`
+      }
     }catch(e){
       console.error(e);
+    }
+    const paymentBtn = document.querySelector(".buy-btn");  
+    if (paymentBtn){
+      paymentBtn.addEventListener("click", (e) => {
+        fetch("http://localhost:3000/create-checkout-session", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            items: { 
+              id: paymentBtn.dataset.courseId/*1*/, quantity: 1 
+            },
+            otherDetail:{
+              userID: userID, 
+              courseID: paymentBtn.dataset.courseId
+            }
+          }),
+        })
+        .then(res => {
+          if (res.ok) return res.json()
+          return res.json().then(json => Promise.reject(json))
+        })
+        .then(({ url, otherDetail }) => {
+          window.location = url
+        })
+        .catch(e => {
+          console.error(e.error)
+        })
+      })
     }
   } else {
     loginBtn.style.display = "block";
     userBtn.style.display = "none";
     profileGroup.classList.add("hide");
     document.getElementById("user").style.display = "none";
-    reviewForm.innerHTML = "<p>Login to post review</p>"
+    reviewForm.innerHTML = "<p>Login to post review</p>";
+    // location.href = "/"
   }
 });
 

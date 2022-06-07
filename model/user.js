@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
             ref: "Course"
         }
     ]
-})
+}, {versionKey: false});
 
 const User = mongoose.model("User", userSchema)
 

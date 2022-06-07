@@ -9,7 +9,7 @@ const reviewSchema = new mongoose.Schema({
         ref: "User",
         required: true
     }
-})
+}, {versionKey: false})
 
 const Review = mongoose.model("Reviews", reviewSchema)
 

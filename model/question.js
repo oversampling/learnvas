@@ -11,7 +11,7 @@ const questionSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }
-})
+}, {versionKey: false})
 
 const Question = mongoose.model("Questions", questionSchema)
 

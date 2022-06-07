@@ -30,7 +30,7 @@ const courseSchema = new mongoose.Schema({
         type: String, 
         require:true
     }
-})
+}, {versionKey: false})
 
 const Course = mongoose.model("Course", courseSchema)
 

@@ -20,7 +20,7 @@ const { estimatedDocumentCount } = require("./model/user");
 const { type } = require("os");
 
 //Stripe
-const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 const { log } = console;
 
@@ -132,13 +132,11 @@ app.post("/user", async (req, res) => {
     try {
       const newUser = await User({email, name, photo});
       newUser.save();
-      // console.log(newUser[0]._id.toString())
       return res.json({userID: newUser[0]._id.toString()});
     } catch (error) {
       console.log(error.message)
     }
   }else{
-    // console.log(user[0]._id.toString())
     return res.json({userID: user[0]._id.toString()});
   }
 })
@@ -191,14 +189,6 @@ app.post("/create-checkout-session", async (req, res) => {
     return res.status(500).json({ error: e.message })
   }
 })
-
-// app.post("/buyCourses", async (req, res) => {
-//   const {userID, courseID} = req.body.otherDetail;
-//   const user = await User.findById(userID)
-//   const course = await Course.findById(courseID);
-//   user.courses.push(course._id)
-//   await user.save();
-// })
 
 app.listen(3000, () => {
   console.log("Listening on port 3000");

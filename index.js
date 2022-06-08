@@ -132,7 +132,7 @@ app.post("/user", async (req, res) => {
     try {
       const newUser = await User({email, name, photo});
       newUser.save();
-      return res.json({userID: newUser[0]._id.toString()});
+      return res.json({userID: newUser._id.toString()});
     } catch (error) {
       console.log(error.message)
     }
@@ -190,8 +190,4 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 })
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-  console.log("Listening on port " + port);
-});
+module.exports = app;

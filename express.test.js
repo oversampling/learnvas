@@ -32,7 +32,6 @@ describe('Test the addLike method', () => {
         expect(response.statusCode).toBe(200);
     })
     test("Able to add new user", async () => {
-        jest.setTimeout(100000);
         const response = await request(app).post("/user").send({
             name: "John",
             email: "john@gmail.com",
@@ -43,7 +42,6 @@ describe('Test the addLike method', () => {
         await User.deleteOne({ email: "john@gmail.com" });
     })
     test("Able to add new review", async () => {
-        jest.setTimeout(100000);
         const user = await User({ email: "john@gmail.com", name: "John", photo: "https://lh3.googleusercontent.com/a/AATXAJxOTt0rWPu6UL4YBTHBzw2BoEPtsFZdmyUkT_wI=s96-c" });
         await user.save();
         const response = await request(app).post("/review").send({

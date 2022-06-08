@@ -11,6 +11,9 @@ on:
     branches: [ "master" ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env: 
+  MONGODB_URI: ${{ secrets.MONGODB_URI}}
+  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
 jobs:
   # This workflow contains a single job called "build"
   build:
@@ -21,10 +24,15 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-  
+      - name: Launch MongoDB
+        uses: wbari/start-mongoDB@v0.2
+        with:
+          mongoDBVersion: 4.2
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
           node-version: 16
       - run: npm i
       - run: npm test
+        env: 
+          MONGODB_URI: ${{secrets.MONGODB_URI}}

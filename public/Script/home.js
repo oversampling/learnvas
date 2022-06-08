@@ -122,7 +122,7 @@ auth.onAuthStateChanged(async user => {
     const paymentBtn = document.querySelector(".buy-btn");  
     if (paymentBtn){
       paymentBtn.addEventListener("click", (e) => {
-        fetch("http://localhost:3000/create-checkout-session", {
+        fetch("/create-checkout-session", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

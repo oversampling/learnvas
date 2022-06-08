@@ -13,9 +13,13 @@ db.once("open", function () {
 });
 
 const courseModel = require("../model/course.js");
+const reviewModel = require("../model/review.js");
+const questionModel = require("../model/question.js");
 
 const seedDB = async () => {
     await courseModel.deleteMany({});
+    await reviewModel.deleteMany({});
+    await questionModel.deleteMany({});
     const course1 = new courseModel({ title: "Object Oriented Programming", price: 55, instructor: "Estefania Cassingena Navone", description: "Learn Object Oriented Programming in Python with Step-by-Step Video Lectures, Projects, Exercises, Diagrams and More.", photo: "/Assets/undraw_data_processing_yrrv.svg", material: "wN0x9eZLix4" });
     await course1.save();
     // Create course using data from courses.csv

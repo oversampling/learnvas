@@ -1,30 +1,17 @@
-# Online Tuition website
+# [Learnvas](learnvas.herokuapp.com/)
 
->## This is an online tuition website that provide platform that allow user to buy online course and learn online
+ The main goal of this project is build an online courses system like [Udemy](https://www.udemy.com/) or [Coursera](https://www.coursera.org/)
 
-### Technology involve in this project
-* EJS template
-* Node js
-* Express js
-* Firebase
-* Mongodb/ Mongoose
-* Stripe __(Handle Payment)__
-* HTML, CSS, Javascript
-* dotenv
+### Project Description
+> This application allow user to login and buy course provided. After users bought the course, users can watch the course's content. This project used firebase authentication, express js as backend, ejs as templating, mongoose/mongodb as database, Stripe as payment solution, Jest as testing framework. 
 
-### How to setup the for the website in your local computer
-1. Download the code from https://github.com/chan1992241/Tuition-Website.git
-2. run command "npm install" to install require dependencies
-3. Import data to your mongodb, each collection name is following the title of the file
-4. Create a .env file that contain your stripe API key **(optional)**
-    ````
-    SERVER_URL=http://localhost:3000 
-    STRIPE_API_KEY=your_stripe_api_key
-    ````
-5. Run command node index.js and go to localhost:3000
+### How to install this application
+1. `git clone https://github.com/chan1992241/learnvas.git`
+2. `npm install`
+3. filling in environment variable to .env.example and rename the file to .env
+4. `node seeds/index.js`
+5. `npm start`
+6. `npm test` to run test script
 
-Future Improvement
---------
-1. Change more secure way to add course to each user
-2. Bug fix
-3. Clean up redundant css property.
+### Things I learnt
+In this project, I learnt how to passing environment variable in github action to repository. Besides, I learnt that Jest run test in parallel.

@@ -546,13 +546,13 @@ footer div:nth-of-type(4) {
 
 #aboutUs-firstPage .card-body p:nth-child(1) {
   font-size: var(--font-size-fourth);
-  margin: 5% 5%;
+  margin: 5%;
 }
 
 #aboutUs-firstPage .card-body p:nth-child(2) {
   font-size: var(--font-size-fourth);
   font-weight: 300;
-  margin: 5% 5%;
+  margin: 5%;
 }
 
 #aboutUs-secondPage {
@@ -1302,13 +1302,13 @@ footer div:nth-of-type(4) {
 
   #aboutUs-firstPage .card-body p:nth-child(1) {
     font-size: var(--font-size-thirth);
-    margin: 5% 5%;
+    margin: 5%;
   }
 
   #aboutUs-firstPage .card-body p:nth-child(2) {
     font-size: var(--font-size-thirth);
     font-weight: 300;
-    margin: 5% 5%;
+    margin: 5%;
   }
   #aboutUs-secondPage {
     border-bottom: 1px solid var(--background-color-secondary);

@@ -14,8 +14,9 @@ describe("Check is page load correctly", () => {
 });
 
 describe('Test the addLike method', () => {
-    beforeAll(() => {
-        mongoose.connect(process.env.MONGODB_URI, {
+    beforeAll(async () => {
+        await mongoose.disconnect();
+        await mongoose.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });

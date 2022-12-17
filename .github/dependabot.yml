@@ -4,3 +4,5 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    MONGODB_URI: ${{secrets.MONGODB_URI}}
+    STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}

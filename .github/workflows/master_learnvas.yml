@@ -9,6 +9,10 @@ on:
       - master
   workflow_dispatch:
 
+env:
+  MONGODB_URI: ${{secrets.MONGODB_URI}}
+  STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+
 jobs:
   build:
     runs-on: ubuntu-latest

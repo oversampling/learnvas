@@ -16,7 +16,7 @@
     "express": "^4.17.1",
     "firebase": "^9.16.0",
     "mongoose": "^6.9.0",
-    "stripe": "^11.8.0"
+    "stripe": "^11.10.0"
   },
   "devDependencies": {
     "jest": "^29.4.1",

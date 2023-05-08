@@ -11,6 +11,14 @@ require("dotenv").config()
 
 //Mongoose model
 const mongoose = require("mongoose");
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("mongo connected"))
+  .catch((err) => console.log(err));
+
 const User = require("./model/user");
 const Course = require("./model/course");
 const Question = require("./model/question.js");
@@ -26,15 +34,6 @@ const { log } = console;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("mongo connected"))
-  .catch((err) => console.log(err));
-
 app.use(express.static(path.join(__dirname, "/public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "public"));

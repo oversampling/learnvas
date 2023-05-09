@@ -12,7 +12,7 @@ require("dotenv").config()
 //Mongoose model
 const mongoose = require("mongoose");
 mongoose
-  .connect(process.env.MONGODB_URI, {
+  .connect(process.env.CUSTOMCONNSTR_MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

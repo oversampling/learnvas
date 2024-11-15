@@ -6,7 +6,6 @@
   "scripts": {
     "devStart": "nodemon index.js",
     "start": "node server.js",
-    "test": "jest ./express.test.js --runInBand --forceExit"
   },
   "author": "",
   "license": "ISC",

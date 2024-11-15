@@ -20,6 +20,7 @@ on:
 env:
   MONGODB_URI: ${{ secrets.MONGODB_URI}}
   STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+  CUSTOMCONNSTR_MONGODB_URI: ${{ secrets.CUSTOMCONNSTR_MONGODB_URI }}
 jobs:
   build:
     runs-on: ubuntu-latest

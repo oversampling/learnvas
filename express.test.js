@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Course = require("./model/course");
 const User = require("./model/user");
 const Review = require("./model/review");
-require("dotenv").config()
+// require("dotenv").config()
 const app = require('./index');
 
 describe("Check is page load correctly", () => {
